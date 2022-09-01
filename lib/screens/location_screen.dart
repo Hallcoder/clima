@@ -67,8 +67,12 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   FlatButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CityScreen()));
+                    onPressed: () async{
+                     var typedName = await Navigator.push(context, MaterialPageRoute(builder: (context)=> CityScreen()));
+                     if(typedName != null){
+                     var wData = await  weather.getCityWeather(typedName);
+                     updateUI(wData);
+                     }
                     },
                     child: Icon(
                       Icons.location_city,
@@ -86,7 +90,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kTempTextStyle,
                     ),
                     Text(
-                      weatherIcon ?? '',
+                      weatherIcon,
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -95,7 +99,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  weather.getMessage(int.parse(temperature)) ?? 'Unable to get data',
+                  weather.getMessage(int.parse(temperature)),
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
