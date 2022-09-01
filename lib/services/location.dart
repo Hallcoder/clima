@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 class Location {
   double latitude;
   double longitude;
-  Location(this.longitude, this.latitude);
+  Location();
   getCurrentLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();
     try {
@@ -12,7 +12,8 @@ class Location {
           permission == LocationPermission.whileInUse) {
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.medium);
-        print(position);
+        latitude = position.latitude;
+        longitude = position.longitude;
       } else {
         print('Permission denied');
       }
